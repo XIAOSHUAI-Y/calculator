@@ -89,9 +89,17 @@ string Mul(string num1, string num2)
 	if ((isNegative1 && !isNegative2) || (!isNegative1 && isNegative2))
 		isNegativeres = true;
 	res = mul(num1, num2);
+	int t = res.size();
+	if (t <= precision)
+	{
+		int m = precision - t + 1;
+		while (m--)
+		{
+			res.insert(0, "0");
+		}
+	}
 	if (isNegativeres)
 		res.insert(0, "-");
 	res.insert(res.size() - precision, ".");
 	return res;
 }
-
