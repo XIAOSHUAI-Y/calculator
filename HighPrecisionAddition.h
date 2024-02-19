@@ -4,10 +4,10 @@
 
 using namespace std;
 
-const int precision = 10;
+const int precision1 = 10;
 
 // 判断num1和num2的大小，如果num1>num2，返回1， num1<num2返回2， num1 = num2 返回0
-int cmp(string num1, string num2)
+int cmp1(string num1, string num2)
 {
 	if (num1.size() != num2.size())
 	{
@@ -29,7 +29,7 @@ int cmp(string num1, string num2)
 	return 0;
 }
 
-string sub(string num1, string num2)
+string sub1(string num1, string num2)
 {
 	string res;
 	int borrow = 0;
@@ -61,7 +61,7 @@ string sub(string num1, string num2)
 	return res;
 }
 
-string add(string num1, string num2) {
+string add1(string num1, string num2) {
 	string res; // 存储计算结果的字符串
 	int carry = 0; // 进位值的初始值为0
 	int i = num1.length() - 1;
@@ -97,20 +97,20 @@ string Add(string num1, string num2)
 	// 将小数点后的位数补齐
 	if (dot1 == string::npos)
 	{
-		num1.append(precision, '0');
+		num1.append(precision1, '0');
 	}
 	else
 	{
-		num1.append(precision - (len1 - dot1 - 1), '0');
+		num1.append(precision1 - (len1 - dot1 - 1), '0');
 		num1.erase(dot1, 1);
 	}
 	if (dot2 == string::npos)
 	{
-		num2.append(precision, '0');
+		num2.append(precision1, '0');
 	}
 	else
 	{
-		num2.append(precision - (len2 - dot2 - 1), '0');
+		num2.append(precision1 - (len2 - dot2 - 1), '0');
 		num2.erase(dot2, 1);
 	}
 	string res;
@@ -132,37 +132,37 @@ string Add(string num1, string num2)
 	
 	// 根据两个数字的符号确定最终结果的符号
 	bool isNegativeres = false;
-	if(!isNegative1 && !isNegative2) res = add(num1, num2);
+	if(!isNegative1 && !isNegative2) res = add1(num1, num2);
 	else if(isNegative1 && isNegative2)
 	{
-		res = add(num1, num2);
+		res = add1(num1, num2);
 		isNegativeres = true;
 	}
 	else if(!isNegative1 && isNegative2) 
 	{
-		if(cmp(num1, num2) < 2) res = sub(num1, num2);
+		if(cmp1(num1, num2) < 2) res = sub1(num1, num2);
 		else 
 		{
 			swap(num1, num2);
 			isNegativeres = true;
-			res = sub(num1, num2);
+			res = sub1(num1, num2);
 		}
 	}
 	else if(isNegative1 && !isNegative2)
 	{
-		if(cmp(num1, num2) == 1)
+		if(cmp1(num1, num2) == 1)
 		{
 			isNegativeres = true;
-			res = sub(num1, num2);
+			res = sub1(num1, num2);
 		}
 		else
 		{
 			swap(num1, num2);
-			res = sub(num1, num2);
+			res = sub1(num1, num2);
 		}
 	}
 	if(isNegativeres) res.insert(0, "-");
-	res.insert(res.length() - precision, ".");
+	res.insert(res.length() - precision1, ".");
 	
 	return res;
 }

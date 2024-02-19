@@ -5,7 +5,7 @@
 
 using namespace std;
 
-const int precision = 10;
+const int precision2 = 10;
 
 string mul(string num1, string num2)
 {
@@ -30,7 +30,7 @@ string mul(string num1, string num2)
 	}
 	// 将计算结果转换为字符串
 	string res1;
-	for (int i = 0; i < res.size() - precision; i++)
+	for (int i = 0; i < res.size() - precision2; i++)
 	{
 		if (res1.empty() && res[i] == 0)
 			continue; // 去除前导0
@@ -55,20 +55,20 @@ string Mul(string num1, string num2)
 	// 将小数点后的位数补齐
 	if (dot1 == string::npos)
 	{
-		num1.append(precision, '0');
+		num1.append(precision2, '0');
 	}
 	else
 	{
-		num1.append(precision - (len1 - dot1 - 1), '0');
+		num1.append(precision2 - (len1 - dot1 - 1), '0');
 		num1.erase(dot1, 1);
 	}
 	if (dot2 == string::npos)
 	{
-		num2.append(precision, '0');
+		num2.append(precision2, '0');
 	}
 	else
 	{
-		num2.append(precision - (len2 - dot2 - 1), '0');
+		num2.append(precision2 - (len2 - dot2 - 1), '0');
 		num2.erase(dot2, 1);
 	}
 	
@@ -90,9 +90,9 @@ string Mul(string num1, string num2)
 		isNegativeres = true;
 	res = mul(num1, num2);
 	int t = res.size();
-	if (t <= precision)
+	if (t <= precision2)
 	{
-		int m = precision - t + 1;
+		int m = precision2 - t + 1;
 		while (m--)
 		{
 			res.insert(0, "0");
@@ -100,6 +100,6 @@ string Mul(string num1, string num2)
 	}
 	if (isNegativeres)
 		res.insert(0, "-");
-	res.insert(res.size() - precision, ".");
+	res.insert(res.size() - precision2, ".");
 	return res;
 }

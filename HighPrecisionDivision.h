@@ -1,13 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int MAXN = 300 + 4; 
-const int precision = 10;
+const int MAXN = 300 + 4;
+const int precision3 = 10;
 
 int tmp[MAXN] = {}; // 交换用字符串
-int a[MAXN] = {};   // 存储加数A
-int b[MAXN] = {};   // 存储加数B
-int c[MAXN] = {};   // 存储和B
+int a[MAXN] = {};		// 存储加数A
+int b[MAXN] = {};		// 存储加数B
+int c[MAXN] = {};		// 存储和B
 
 int compare(int a[], int b[])
 {
@@ -20,7 +20,7 @@ int compare(int a[], int b[])
 	{
 		return -1;
 	}
-	
+
 	// 逐位比较
 	for (int i = a[0]; i > 0; i--)
 	{
@@ -33,7 +33,7 @@ int compare(int a[], int b[])
 			return -1;
 		}
 	}
-	
+
 	return 0;
 }
 
@@ -48,7 +48,8 @@ void numcpy(int a[], int b[], int dest)
 }
 
 string div(string s1, string s2)
-{
+{	
+	
 	// 处理被除数
 	int len = s1.size();
 	a[0] = len;
@@ -56,7 +57,7 @@ string div(string s1, string s2)
 	{
 		a[len - i] = s1[i] - '0';
 	}
-	
+
 	// 处理除数
 	len = s2.size();
 	b[0] = len;
@@ -70,7 +71,7 @@ string div(string s1, string s2)
 		memset(tmp, 0, sizeof(tmp));
 		// 高位对齐
 		numcpy(b, tmp, i);
-		
+
 		while (compare(a, tmp) >= 0)
 		{
 			c[i]++;
@@ -84,7 +85,7 @@ string div(string s1, string s2)
 				}
 				a[j] -= tmp[j];
 			}
-			
+
 			int k = a[0];
 			while (a[k] == 0)
 			{
@@ -93,7 +94,7 @@ string div(string s1, string s2)
 			a[0] = k;
 		}
 	}
-	
+
 	// 控制最高位的0
 	while (c[0] > 0 && c[c[0]] == 0)
 	{
@@ -107,6 +108,9 @@ string div(string s1, string s2)
 		res += (c[i] + '0');
 		// printf("%d", c[i]);
 	}
+	memset(a, 0, sizeof a);
+	memset(b, 0, sizeof b);
+	memset(c, 0, sizeof c);
 	// printf("\n");
 	return res;
 }
@@ -162,24 +166,24 @@ string Div(string num1, string num2)
 	}
 	if (m >= n)
 	{
-		if (m - n <= precision)
+		if (m - n <= precision3)
 		{
-			num1.append(precision - (m - n), '0'); // 在分子后面添0，保证分子扩大倍数是分母的precision + 1倍
+			num1.append(precision3 - (m - n), '0'); // 在分子后面添0，保证分子扩大倍数是分母的precision3 + 1倍
 		}
 		else
 		{
-			num2.append((m - n) - precision, '0'); // 在分母后面添0，保证分子扩大倍数是分母的precision + 1倍
+			num2.append((m - n) - precision3, '0'); // 在分母后面添0，保证分子扩大倍数是分母的precision3 + 1倍
 		}
 	}
 	else
 	{
-		num1.append(precision + (n - m), '0');
+		num1.append(precision3 + (n - m), '0');
 	}
 	res = div(num1, num2);
 	int t = res.size();
-	if (t <= precision)
+	if (t <= precision3)
 	{
-		int s = precision - t + 1;
+		int s = precision3 - t + 1;
 		while (s--)
 		{
 			res.insert(0, "0");
@@ -187,8 +191,6 @@ string Div(string num1, string num2)
 	}
 	if (isNegativeres)
 		res.insert(0, "-");
-	res.insert(res.size() - precision, ".");
+	res.insert(res.size() - precision3, ".");
 	return res;
 }
-
-
