@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <easyx.h>
 #include "Calculation.h"
+#include "History.h"
 #define OK    1
 #define ERROR	 0
 
@@ -13,6 +14,71 @@ void Paint();            //页面绘制
 double dis(int x1, int y1, int x2, int y2);
 string displayAnswer(string infixExpression);
 
+//绘制历史记录界面
+void Paint2()
+{
+	initgraph(300, 600);
+	setbkcolor(RGB(51, 51, 51));
+//	setfillcolor();
+	for (int y = 0; y < 20; y++) {
+		setcolor(RGB(51, 51, 51));   //设置线条颜色为灰色
+		line(0, y, 400, y);      //用循环语句画平行直线Line（x1,y1）（x2,y2）为直线的两个端点的坐标
+	}
+	settextcolor(WHITE);
+	settextstyle(20, 0, _T("宋体"));
+	outtextxy(10, 0, "历史记录");
+	
+	settextcolor(WHITE);
+	settextstyle(20, 0, _T("宋体"));
+	outtextxy(230, 570, "下一页");
+	
+	settextcolor(WHITE);
+	settextstyle(20, 0, _T("宋体"));
+	outtextxy(10, 570, "上一页");
+	
+	showHistory();
+	printCurrPage();
+	MOUSEMSG m;
+	while(1)
+	{
+		m = GetMouseMsg();
+		switch(m.uMsg)
+		{
+		case WM_LBUTTONDOWN:
+			while(m.x >= 10 && m.x <= 300 && m.y >= 570 && m.y <= 600)
+			{
+				//清空上一次记录界面
+				for (int y = 30; y < 550; y++) {
+					setcolor(BLACK);
+					line(0, y, 400, y);
+				}
+				//点击”下一页“
+				if(m.x >= 230 && m.x <= 300){
+					if(!current->next){
+						settextcolor(WHITE);
+						settextstyle(25, 0, "黑体");
+						outtextxy(15, 520, "这是最后一页");
+					}
+					else current = current->next;
+					printCurrPage();
+//					shownext();
+				}
+				if(m.x >= 10 && m.x <= 80){
+					if(!current->prev){
+						settextcolor(WHITE);
+						settextstyle(25, 0, "黑体");
+						outtextxy(15, 520, "这是第一页");
+					}
+					else current = current->prev;
+					printCurrPage();
+//					showprev();
+				}
+				break;
+			}
+			break;
+		}
+	}	
+}
 
 
 void Paint() {
@@ -33,7 +99,7 @@ void Paint() {
 	//settextstyle(20, 10, L"宋体");//字体的宽+字体的高+字体样式
 	//输出文本信息
 	outtextxy(10, 0, "计算器");//文本坐标+文本内容（在指定位置输出字符串）
-	
+	outtextxy(210, 0, "历史记录");
 	settextstyle(40, 0, "黑体");
 	setbkmode(TRANSPARENT); //这个函数用于设置当前设备图案填充和文字输出时的背景模式。背景是透明的。
 	//画橙色圆
@@ -118,8 +184,8 @@ void Paint() {
 		m = GetMouseMsg();// 获取鼠标事件
 		switch (m.uMsg)
 		{
-		case WM_LBUTTONDOWN:// 当左键按下时
-			while (m.x >=15 && m.x <= 300 && m.y >= 240 && m.y <= 580)
+			case WM_LBUTTONDOWN:// 当左键按下时
+			while (m.x >=15 && m.x <= 300 && m.y >= 0 && m.y <= 580)
 			{
 				// 根据鼠标点击的位置判断用户输入的内容
 				if (dis(m.x, m.y, 45, 480) <= 30) {
@@ -161,6 +227,9 @@ void Paint() {
 				if (dis(m.x, m.y, 255, 550) <= 30) {
 					string expression(str);
 					string result = displayAnswer(expression);
+					expression += "=";
+					expression += result;
+					saveHistory(expression);
 					memset(str, '\0',sizeof str);
 					strcpy(str, result.c_str());
 					i = result.size();
@@ -184,6 +253,10 @@ void Paint() {
 				}
 				if (dis(m.x, m.y, 115, 270) <= 30) {
 					str[i] = '^';
+				}
+				//点击“历史记录”
+				if((m.x >= 195 && m.x <= 285) && (m.y >= 0 && m.y <= 10)){
+					Paint2();
 				}
 				if (dis(m.x, m.y, 185, 270) <= 30) {
 					return;
@@ -224,7 +297,7 @@ void Paint() {
 				break;
 			}
 			break;
-	
+			
 		}
 	}
 	
@@ -254,7 +327,7 @@ string displayAnswer(string infixExpression){
 		fontSize = 16;
 		step = 8;
 	}
-
+	
 	settextcolor(WHITE);
 	settextstyle(fontSize, 0, "黑体");
 	outtextxy(255 - step * (result.size() - 1), 150, result.c_str());
@@ -271,11 +344,5 @@ int main() {
 	while(true){
 		Paint();	
 	}
-	
-	int x1 = 0, y1 = 0, x2 = 3, y2 = 4;
-	double distance = dis(x1, y1, x2, y2);
-	// 输出计算得到的距离
-	printf("Distance: %.2f\n", distance);
-	
 	return 0;
 }
